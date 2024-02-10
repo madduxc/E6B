@@ -134,7 +134,6 @@ def main():
     except:
         img = "engines image"
 
-    # home = ttk.Frame(e6b, padding=10)
     text_box = ttk.Label(e6b)
     homeScreen()
     quit_btn    = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING, text="Quit", command=e6b.destroy)
