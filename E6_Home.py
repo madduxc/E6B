@@ -1,13 +1,17 @@
 # Author:           Charles D. Maddux
 # Date Created:     27 January 20224
 # Description:      E6B Home Page
+
 import tkinter as tk
+import subprocess, threading, os, sys, json
+
 from tkinter import ttk
 from PIL import ImageTk
 from LegTime import runLegTime
 from FuelRequired import runFuelReq
 
 # constants
+SAVE_FILE = "eb6_data.json"
 TEXT_BOX_WIDTH      = 75
 MENU_BUTTON_WIDTH   = 30
 MAIN_BUTTON_WIDTH   = 20
@@ -15,14 +19,34 @@ TEXT_BOX_PADDING    = 10
 MENU_BUTTON_PADDING = 10
 MAIN_BUTTON_PADDING = 3
 
-# declare & initialize variables
-e6b = tk.Tk()
-e6b.title("E6B")
-
 
 def main():
+    """
+    E6B Flight Computer. For manual cross country flight planning.  Home screen.
+        - House and format buttons that lead to other screens.
+        - Display menu of instruction for how to use the tool
+        - (future) retrieve and display summary of results
+        - (future) track leg profiles
+        - (future) build a trip
+    :return: none
+    """
 
+    # declare & initialize window
+    e6b = tk.Tk()
+    e6b.title("E6B")
+
+    def killE6b():
+        # df.join()
+        e6b.quit()
+
+    # command to print instructions to a textbox
     def homeScreen():
+        """
+        populate text box to provide instructions for use of tool
+        :return: none
+        """
+
+        # declare and initialize variables
         instructions = "\n                         Welcome to the Desktop E6B Flight Computer.\n" \
                        " - Wind Correction Angle: determine the effect different winds will have on your flight path and\n" \
                        "    ground speed at different airspeeds.\n\n" \
@@ -33,16 +57,21 @@ def main():
                        " - Altitude: determine density altitude and pressure altitude for a specific elevation, temperature,\n\n" \
                        "   and barometer setting.\n\n" \
                        " - Conversions: perform useful conversions, like gallons to pounds for Avgas and Jet A.\n\n"
+
         text_box.config(width=TEXT_BOX_WIDTH, padding=TEXT_BOX_PADDING, text=instructions, font=10)
 
+    # populate the splash/image at the top of the tool
     try:
         img = ImageTk.PhotoImage(file='images/engines.jpg')
+    # handle exceptions if image not found
     except:
         img = "engines image"
 
+    # initialize the text box
     text_box = ttk.Label(e6b)
     homeScreen()
-    quit_btn    = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING, text="Quit", command=e6b.destroy)
+
+    quit_btn    = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING, text="Quit", command=killE6b)
     reset_btn   = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING, text="Reset")
     summary_btn = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING, text="View Summary")
     picture_window  = ttk.Label(e6b, width=TEXT_BOX_WIDTH, padding=TEXT_BOX_PADDING, image=img)
