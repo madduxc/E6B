@@ -7,7 +7,7 @@ import DataExchange as svc
 from tkinter import ttk
 
 
-def runFuelReq():
+def runFuelReq(test=0):
     """
     Function to calculate the minimum fuel required to fly a set period of time at a given fuel consumption rate
     Time Flown:             float   [minutes]       - user input (or retrieve saved value)
@@ -22,6 +22,15 @@ def runFuelReq():
     # declare & initialize window
     fuel_box = tk.Tk()
     fuel_box.title("Fuel Required")
+
+    # create the page menu
+    menu = tk.Menu(fuel_box)
+    fuel_box.config(menu=menu)
+    filemenu = tk.Menu(menu)
+    menu.add_cascade(label='File', menu=filemenu)
+    filemenu.add_command(label='Save', command= lambda: saveData(gas))
+    filemenu.add_separator()
+    filemenu.add_command(label='Home', command=fuel_box.destroy)
 
     # -----------------------------------------------------------------------------------------------------------------
     def goHome():
@@ -125,10 +134,13 @@ def runFuelReq():
     fuel_units = ttk.Label(fuel_box, text=" gal ", font=10)
     fuel_units.grid(column=6, row=1)
     # -----------------------------------------------------------------------------------------------------------------
+    # testing - if testing, open GUI window without function call
+    if test == 1:
+        fuel_box.mainloop()
 
 
 def main():
-    runFuelReq()
+    runFuelReq(1)
 
 
 if __name__ == "__main__":

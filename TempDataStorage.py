@@ -2,11 +2,14 @@
 # Date Created:     11 February 20224
 # Description:      Temporary service to store E6B data locally while microservice is in development
 
-import json
+import time, json
 
 
 def main():
-    print("In development - geese")
+    while True:
+        print("In development - geese")
+        time.sleep(5)
+
 
 
 if __name__ == "__main__":

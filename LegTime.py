@@ -7,7 +7,7 @@ import DataExchange as svc
 from tkinter import ttk
 
 
-def runLegTime():
+def runLegTime(test=0):
     """
     Function to calculate the time required to fly a set distance at a given speed over the ground
     conversion from airspeed to ground speed is required prior to this step
@@ -29,7 +29,7 @@ def runLegTime():
     leg_box.config(menu=menu)
     filemenu = tk.Menu(menu)
     menu.add_cascade(label='File', menu=filemenu)
-    filemenu.add_command(label='Save')
+    filemenu.add_command(label='Save', command= lambda: saveData(time))
     filemenu.add_separator()
     filemenu.add_command(label='Home', command=leg_box.destroy)
 
@@ -124,7 +124,6 @@ def runLegTime():
     btn.grid(column=1, row=3, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # return calculated value
-    # -----------------------------------------------------------------------------------------------------------------
     leg = ttk.Label(leg_box, text="The time required the Leg is: ", font=10)
     leg.grid(column=4, row=1)
 
@@ -135,10 +134,13 @@ def runLegTime():
     t_units = ttk.Label(leg_box, text=" mins ", font=10)
     t_units.grid(column=6, row=1)
     # -----------------------------------------------------------------------------------------------------------------
+    # testing - if testing, open GUI window without function call
+    if test == 1:
+        leg_box.mainloop()
 
 
 def main():
-    runLegTime()
+    runLegTime(1)
 
 
 if __name__ == "__main__":
