@@ -1,5 +1,5 @@
 # Author:           Charles D. Maddux
-# Date Created:     10 February 20224
+# Date Created:     10 February 2024
 # Description:      E6B Fuel Required Calculator
 
 import tkinter as tk
@@ -22,6 +22,13 @@ def runFuelReq(test=0):
     # declare & initialize window
     fuel_box = tk.Tk()
     fuel_box.title("Fuel Required")
+    width = 630
+    height = 125
+    screen_width = fuel_box.winfo_screenwidth()
+    screen_height = fuel_box.winfo_screenheight()
+    x_coord = screen_width - (width + 20)
+    y_coord = (screen_height / 2) - (height / 2)
+    fuel_box.geometry("%dx%d+%d+%d" % (width, height, x_coord, y_coord))
 
     # create the page menu
     menu = tk.Menu(fuel_box)
@@ -42,7 +49,6 @@ def runFuelReq(test=0):
         fuel_box.destroy()
 
     # -----------------------------------------------------------------------------------------------------------------
-    # call DataExchange to save the data just calculated
     def saveData(gas):
         """
         Call DataExchange to save the data just calculated
@@ -52,10 +58,10 @@ def runFuelReq(test=0):
         # declare and initialize variables
         key = "Fuel Required"
         index = len(gas) - 1
-        pair = gas[index]
+        val = gas[index]
 
         # send data to be written
-        svc.saveData(key, pair)
+        svc.saveData(key, val)
 
     # -----------------------------------------------------------------------------------------------------------------
     def calculateFuelReq(gas):
@@ -90,7 +96,6 @@ def runFuelReq(test=0):
     save_btn = ttk.Button(fuel_box, padding=4, text="Save", command= lambda: saveData(gas))
     save_btn.grid(column=4, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
-
     # time entry
     # -----------------------------------------------------------------------------------------------------------------
     time = ttk.Label(fuel_box, text="Enter the time flown: ", padding=3, font=10)
@@ -103,7 +108,6 @@ def runFuelReq(test=0):
     t_units = ttk.Label(fuel_box, text=" mins ", font=10)
     t_units.grid(column=2, row=1)
     # -----------------------------------------------------------------------------------------------------------------
-
     # fuel consumption entry
     # -----------------------------------------------------------------------------------------------------------------
     flow = ttk.Label(fuel_box, text="Enter the fuel flow: ", padding=3, font=10)
@@ -116,7 +120,6 @@ def runFuelReq(test=0):
     f_units = ttk.Label(fuel_box, text=" gal/hr ", font=10)
     f_units.grid(column=2, row=2)
     # -----------------------------------------------------------------------------------------------------------------
-
     # calculate button
     # -----------------------------------------------------------------------------------------------------------------
     btn = ttk.Button(fuel_box, padding=3, text="Calculate", command=lambda: calculateFuelReq(gas))

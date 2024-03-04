@@ -1,5 +1,5 @@
 # Author:           Charles D. Maddux
-# Date Created:     26 February 20224
+# Date Created:     26 February 2024
 # Description:      E6B Fuel Required Calculator
 #                   Get Wind Data page
 import subprocess
@@ -28,33 +28,49 @@ def getWindData(test=0):
     # set up GUI window
     wind_box = tk.Tk()
     wind_box.title("Winds and Temperature")
-    wind_box.config(pady=3)
+    wind_box.config(pady=3, padx=5)
+
+    # calculate page size and placement
+    x_coord = 20
+    y_coord = 20
+    wind_box.geometry("+%d+%d" % (x_coord, y_coord))
 
     # create the page menu
     menu = tk.Menu(wind_box)
     wind_box.config(menu=menu)
-
     # -----------------------------------------------------------------------------------------------------------------
     # the File dropdown
     filemenu = tk.Menu(menu)
     menu.add_cascade(label='File', menu=filemenu)
     filemenu.add_command(label='Home', command=wind_box.destroy)
 
+    # -----------------------------------------------------------------------------------------------------------------
     # Region
     regionmenu = tk.Menu(menu)
     menu.add_cascade(label='Region', menu=regionmenu)
-    def setRegion(region):
-         options["region"] = region
 
-    regionmenu.add_command(label='All Regions', command=lambda:  setRegion(region["all"]))
+    def setRegion(region):
+        options["region"] = region
+
+    regionmenu.add_command(label="All Regions", command=lambda: setRegion(region["All Regions"]))
     regionmenu.add_separator()
-    regionmenu.add_command(label='North East', command=lambda:  setRegion(region["North East"]))
+    regionmenu.add_command(label="North East", command=lambda: setRegion(region["North East"]))
     regionmenu.add_separator()
-    regionmenu.add_command(label='North Central', command=lambda:  setRegion(region["North Central"]))
+    regionmenu.add_command(label="South East", command=lambda: setRegion(region["South East"]))
     regionmenu.add_separator()
-    regionmenu.add_command(label='South East', command=lambda:  setRegion(region["South East"]))
+    regionmenu.add_command(label="North Central", command=lambda: setRegion(region["North Central"]))
     regionmenu.add_separator()
-    regionmenu.add_command(label='South Central', command=lambda:  setRegion(region["South Central"]))
+    regionmenu.add_command(label="South Central", command=lambda: setRegion(region["South Central"]))
+    regionmenu.add_separator()
+    regionmenu.add_command(label="Rocky Mountain", command=lambda: setRegion(region["Rocky Mountain"]))
+    regionmenu.add_separator()
+    regionmenu.add_command(label="Pacific Coast", command=lambda: setRegion(region["Pacific Coast"]))
+    regionmenu.add_separator()
+    regionmenu.add_command(label="Alaska", command=lambda: setRegion(region["Alaska"]))
+    regionmenu.add_separator()
+    regionmenu.add_command(label="Hawaii", command=lambda: setRegion(region["Hawaii"]))
+    regionmenu.add_separator()
+    regionmenu.add_command(label="Western Pacific", command=lambda: setRegion(region["Western Pacific"]))
     # -----------------------------------------------------------------------------------------------------------------
     def goHome():
         """
@@ -67,14 +83,18 @@ def getWindData(test=0):
 
     # -----------------------------------------------------------------------------------------------------------------
     def callAPI(params):
-        print("calling the server")
+        """
+        Function to contact and send request to running microservice
+        :param params:
+        :return:
+        """
+        print("calling the server ...")
 
         # create call to microservice
         response = requests.get(f'http://{ipv4}:{port}/get_windsaloft', params=params)
 
         # handle successful response
         if response.status_code == 200:
-
             # process data and break into arrays
             data = response.json()
             labels = data["labels"]
@@ -85,12 +105,12 @@ def getWindData(test=0):
                 # pad values to get them to line in stdout
                 while len(label) < 6:
                     label = label + ' '
-                # new tab instead of newline
+                # new tab instead of newline - print for testing
                 print(f"{label}", end="\t")
             print("")
             # break data into rows
             for row in cells:
-                # filter non-relavent data
+                # filter non-relevant data
                 if len(row) < len(labels):
                     pass
                 # break into individual cells of data
@@ -107,7 +127,7 @@ def getWindData(test=0):
             # add values to cells
             for row in range(len(cells) - 1):
                 for col in range(len(labels)):
-                    ttk.Button(wind_box, padding=1, text=cells[row][col]).grid(column=col + 2, row=row+2)
+                    ttk.Button(wind_box, padding=1, text=cells[row][col]).grid(column=col+2, row=row+2)
 
         # handle unsuccessful response
         elif response.status_code == 400:
@@ -134,7 +154,6 @@ def getWindData(test=0):
     def chooseRegion(*args):
         selected_region = region[reg.get()]
         options["region"] = selected_region
-        print(selected_region)
 
     reg.trace('w', chooseRegion)
     # -----------------------------------------------------------------------------------------------------------------

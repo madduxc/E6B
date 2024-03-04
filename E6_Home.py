@@ -1,5 +1,5 @@
 # Author:           Charles D. Maddux
-# Date Created:     27 January 20224
+# Date Created:     27 January 2024
 # Description:      E6B Home Page
 
 import tkinter as tk
@@ -10,6 +10,7 @@ from PIL import ImageTk
 from LegTime import runLegTime
 from FuelRequired import runFuelReq
 from getWinds import getWindData
+from WindCorrectionAngle import runWindCorrection
 
 # constants
 SAVE_FILE = "eb6_data.json"
@@ -35,6 +36,12 @@ def main():
     # declare & initialize window
     e6b = tk.Tk()
     e6b.title("E6B")
+    width = 950
+    height = 550
+    screen_height = e6b.winfo_screenheight()
+    x_coord = 50
+    y_coord = (screen_height / 2) - 0.75 * (height)
+    e6b.geometry("%dx%d+%d+%d" % (width, height, x_coord, y_coord))
 
     def killE6b():
         e6b.quit()
@@ -78,18 +85,27 @@ def main():
     text_box = ttk.Label(e6b)
     homeScreen()
 
-    quit_btn    = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING, text="Quit", command=killE6b)
-    reset_btn   = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING, text="Reset")
-    summary_btn = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING, text="View Summary")
+    quit_btn    = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING,
+                             text="Quit", command=killE6b)
+    reset_btn   = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING,
+                             text="Reset")
+    summary_btn = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING,
+                             text="View Summary")
     picture_window  = ttk.Label(e6b, width=TEXT_BOX_WIDTH, padding=TEXT_BOX_PADDING, image=img)
-    wind_corr       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING, text="Wind Correction Angle")
-
-    heading_corr    = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING, text="Heading Correction")
-    legtime         = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING, text="Leg Time", command=runLegTime)
-    fuel_req        = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING, text="Fuel Requirements", command=runFuelReq)
-    endurance       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING, text="Endurance")
-    altitude        = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING, text="Altitude")
-    get_winds       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING, text="Get Winds Aloft", command=getWindData)
+    wind_corr       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+                                 text="Wind Correction Angle", command=runWindCorrection)
+    heading_corr    = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+                                 text="Heading Correction")
+    legtime         = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+                                 text="Leg Time", command=runLegTime)
+    fuel_req        = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+                                 text="Fuel Requirements", command=runFuelReq)
+    endurance       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+                                 text="Endurance")
+    altitude        = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+                                 text="Altitude")
+    get_winds       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+                                 text="Get Winds Aloft", command=getWindData)
 
     # position the buttons
     e6b.grid()
@@ -118,11 +134,9 @@ def main():
     # button state
     reset_btn.state([ 'disabled' ])
     summary_btn.state([ 'disabled' ])
-    wind_corr.state([ 'disabled' ])
     heading_corr.state([ 'disabled' ])
     endurance.state([ 'disabled' ])
     altitude.state([ 'disabled' ])
-    # get_winds.state([ 'disabled' ])
 
     print(legtime.configure().keys())
     e6b.mainloop()

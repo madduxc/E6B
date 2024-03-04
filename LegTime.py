@@ -1,5 +1,5 @@
 # Author:           Charles D. Maddux
-# Date Created:     10 February 20224
+# Date Created:     10 February 2024
 # Description:      E6B Leg Time Calculator
 
 import tkinter as tk
@@ -23,6 +23,13 @@ def runLegTime(test=0):
     # declare & initialize window
     leg_box = tk.Tk()
     leg_box.title("Leg Time")
+    width = 690
+    height = 125
+    screen_width = leg_box.winfo_screenwidth()
+    screen_height = leg_box.winfo_screenheight()
+    x_coord = screen_width - (width + 20)
+    y_coord = (screen_height / 2) - 2 * height
+    leg_box.geometry("%dx%d+%d+%d" % (width, height, x_coord, y_coord))
 
     # create the page menu
     menu = tk.Menu(leg_box)
@@ -97,7 +104,7 @@ def runLegTime(test=0):
     dist = ttk.Label(leg_box, text="Enter the distance of the Leg: ", padding=3, font=10)
     dist.grid(column=0, row=1)
 
-    distance = ttk.Entry(leg_box, width=12, font=10)
+    distance = ttk.Entry(leg_box, width=8, font=10)
     distance.insert(1, "")
     distance.grid(column=1, row=1)
 
@@ -110,7 +117,7 @@ def runLegTime(test=0):
     spd = ttk.Label(leg_box, text="Enter the airspeed on the Leg: ", padding=3, font=10)
     spd.grid(column=0, row=2)
 
-    speed = ttk.Entry(leg_box, width=12, font=10)
+    speed = ttk.Entry(leg_box, width=8, font=10)
     speed.insert(1, "")
     speed.grid(column=1, row=2)
 
@@ -127,7 +134,7 @@ def runLegTime(test=0):
     leg = ttk.Label(leg_box, text="The time required the Leg is: ", font=10)
     leg.grid(column=4, row=1)
 
-    leg_time = ttk.Entry(leg_box, width=12, font=10)
+    leg_time = ttk.Entry(leg_box, width=8, font=10)
     leg_time.insert(1, "")
     leg_time.grid(column=5, row=1)
 

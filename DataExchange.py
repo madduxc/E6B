@@ -1,5 +1,5 @@
 # Author:           Charles D. Maddux
-# Date Created:     11 February 20224
+# Date Created:     11 February 2024
 # Description:      Handle calls from E6B to save and retrieve data
 
 import json
@@ -12,7 +12,7 @@ def saveData(key, pair, test=False):
     """
     Takes in key: value pairs of data, reads existing .json file, appends the dictionary, and overwrites the file
     :param key:     (str)           - parameter value for the .json/dictionary
-    :param pair:    (int or float)  - calculated vaule for the parameter
+    :param pair:    (int or float)  - calculated value for the parameter
     :param test:    (bool)          - used for testing. Set to True to print .json values in the terminal
     :return: none
     """
