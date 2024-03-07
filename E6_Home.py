@@ -11,6 +11,8 @@ from LegTime import runLegTime
 from FuelRequired import runFuelReq
 from getWinds import getWindData
 from WindCorrectionAngle import runWindCorrection
+from Endurance import runEndurance
+from Altitudes import runAltitudes
 
 # constants
 SAVE_FILE = "eb6_data.json"
@@ -101,9 +103,9 @@ def main():
     fuel_req        = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Fuel Requirements", command=runFuelReq)
     endurance       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
-                                 text="Endurance")
+                                 text="Endurance", command=runEndurance)
     altitude        = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
-                                 text="Altitude")
+                                 text="Altitude", command=runAltitudes)
     get_winds       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Get Winds Aloft", command=getWindData)
 
@@ -135,8 +137,8 @@ def main():
     reset_btn.state([ 'disabled' ])
     summary_btn.state([ 'disabled' ])
     heading_corr.state([ 'disabled' ])
-    endurance.state([ 'disabled' ])
-    altitude.state([ 'disabled' ])
+    # endurance.state([ 'disabled' ])
+    # altitude.state([ 'disabled' ])
 
     print(legtime.configure().keys())
     e6b.mainloop()

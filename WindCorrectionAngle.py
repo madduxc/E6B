@@ -7,6 +7,7 @@ import math
 import DataExchange as svc
 import tkinter as tk
 from tkinter import ttk
+from goHome import goHome
 
 
 def runWindCorrection(test=0):
@@ -50,18 +51,9 @@ def runWindCorrection(test=0):
     menu.add_cascade(label='File', menu=filemenu)
     filemenu.add_command(label='Save', command= lambda: saveData(th, gs))
     filemenu.add_separator()
-    filemenu.add_command(label='Home', command=wind_corr_box.destroy)
+    filemenu.add_command(label='Home', command=lambda: goHome(wind_corr_box))
     # -----------------------------------------------------------------------------------------------------------------
 
-    def goHome():
-        """
-        Command to close window and return to Home screen
-        :return: none
-        """
-        # close the window
-        wind_corr_box.destroy()
-
-    # -----------------------------------------------------------------------------------------------------------------
     # call DataExchange to save the data just calculated
     def saveData(th, gs):
         """
@@ -132,7 +124,7 @@ def runWindCorrection(test=0):
 
     # -----------------------------------------------------------------------------------------------------------------
     # home button
-    home_btn = ttk.Button(wind_corr_box, padding=4, text="Home", command=goHome)
+    home_btn = ttk.Button(wind_corr_box, padding=4, text="Home", command=lambda: goHome(wind_corr_box))
     home_btn.grid(column=0, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # save button
@@ -229,8 +221,6 @@ def runWindCorrection(test=0):
     gs_units = ttk.Label(wind_corr_box, text=" kts ", font=10)
     gs_units.grid(column=6, row=3)
     # -----------------------------------------------------------------------------------------------------------------
-
-
     if test == 1:
         print("In development - WCA")
         wind_corr_box.mainloop()

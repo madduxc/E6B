@@ -5,6 +5,7 @@
 import tkinter as tk
 import DataExchange as svc
 from tkinter import ttk
+from goHome import goHome
 
 
 def runFuelReq(test=0):
@@ -24,6 +25,8 @@ def runFuelReq(test=0):
     fuel_box.title("Fuel Required")
     width = 630
     height = 125
+
+    # calculate page size and placement
     screen_width = fuel_box.winfo_screenwidth()
     screen_height = fuel_box.winfo_screenheight()
     x_coord = screen_width - (width + 20)
@@ -37,16 +40,7 @@ def runFuelReq(test=0):
     menu.add_cascade(label='File', menu=filemenu)
     filemenu.add_command(label='Save', command= lambda: saveData(gas))
     filemenu.add_separator()
-    filemenu.add_command(label='Home', command=fuel_box.destroy)
-
-    # -----------------------------------------------------------------------------------------------------------------
-    def goHome():
-        """
-        Command to close window and return to Home screen
-        :return: none
-        """
-        # close the window
-        fuel_box.destroy()
+    filemenu.add_command(label='Home', command=lambda: goHome(fuel_box))
 
     # -----------------------------------------------------------------------------------------------------------------
     def saveData(gas):
@@ -89,7 +83,7 @@ def runFuelReq(test=0):
 
     # -----------------------------------------------------------------------------------------------------------------
     # home button
-    home_btn = ttk.Button(fuel_box, padding=4, text="Home", command=goHome)
+    home_btn = ttk.Button(fuel_box, padding=4, text="Home", command=lambda: goHome(fuel_box))
     home_btn.grid(column=0, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # save button
@@ -139,6 +133,7 @@ def runFuelReq(test=0):
     # -----------------------------------------------------------------------------------------------------------------
     # testing - if testing, open GUI window without function call
     if test == 1:
+        print("In development - Fuel Required")
         fuel_box.mainloop()
 
 

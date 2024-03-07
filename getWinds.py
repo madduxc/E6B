@@ -6,13 +6,18 @@ import subprocess
 import requests
 import tkinter as tk
 from tkinter import ttk
+from goHome import goHome
 
 ipv4 = '127.0.0.1'  # local host
 port = 8080         # default port
 
 
 def getWindData(test=0):
-    print("Pheasants")
+    """
+    Function to call microservice for wind and temperature data and display it in a window
+    :return: none
+    """
+
     # launch data exchange service
     def threadLaunch():
         subprocess.run(["python", "..\Aviation_Weather_API_Tool\windsaloft_microservice.py"])
@@ -42,7 +47,7 @@ def getWindData(test=0):
     # the File dropdown
     filemenu = tk.Menu(menu)
     menu.add_cascade(label='File', menu=filemenu)
-    filemenu.add_command(label='Home', command=wind_box.destroy)
+    filemenu.add_command(label='Home', command=lambda: goHome(wind_box))
 
     # -----------------------------------------------------------------------------------------------------------------
     # Region
@@ -71,16 +76,6 @@ def getWindData(test=0):
     regionmenu.add_command(label="Hawaii", command=lambda: setRegion(region["Hawaii"]))
     regionmenu.add_separator()
     regionmenu.add_command(label="Western Pacific", command=lambda: setRegion(region["Western Pacific"]))
-    # -----------------------------------------------------------------------------------------------------------------
-    def goHome():
-        """
-        Command to close window and return to Home screen
-        :return: none
-        """
-        # close the window
-        print("Exiting ...")
-        wind_box.destroy()
-
     # -----------------------------------------------------------------------------------------------------------------
     def callAPI(params):
         """
@@ -141,7 +136,7 @@ def getWindData(test=0):
 
     # -----------------------------------------------------------------------------------------------------------------
     # home button
-    home_btn = ttk.Button(wind_box, padding=4, text="Home", command=goHome)
+    home_btn = ttk.Button(wind_box, padding=4, text="Home", command=lambda: goHome(wind_box))
     home_btn.grid(column=0, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # Region menu
@@ -195,6 +190,7 @@ def getWindData(test=0):
     # -----------------------------------------------------------------------------------------------------------------
     # testing - if testing, open GUI window without function call
     if test == 1:
+        print("In development - Wind Data Microservices")
         wind_box.mainloop()
 
 
