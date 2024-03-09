@@ -57,7 +57,11 @@ def runLegTime(test=0):
 
         # send data to be written
         svc.saveData(key, pair)
-
+    # -----------------------------------------------------------------------------------------------------------------
+    def getData(time):
+        key = "Ground Speed"
+        speed_value = svc.getData(key)
+        speed.insert(1,round(float(speed_value),1))
     # -----------------------------------------------------------------------------------------------------------------
     def calculateLegTime(time):
         """
@@ -71,22 +75,25 @@ def runLegTime(test=0):
 
         # perform calculations (if values are present)
         try:
-            miles = int(distance.get())
-            knots = int(speed.get())
+            miles = float(distance.get())
+            knots = float(speed.get())
             times = miles / knots * 60
             leg_time.insert(1, round(times, 1))
+            # add value to list
+            time.append(times)
 
         # handle condition in which inputs are not present or incorrect format
         except:
             leg_time.insert(1, "???")
 
-        # add value to list
-        time.append(times)
-
     # -----------------------------------------------------------------------------------------------------------------
     # home button
     home_btn = ttk.Button(leg_box, padding=4, text="Home", command=lambda: goHome(leg_box))
     home_btn.grid(column=0, row=0, columnspan=2)
+    # -----------------------------------------------------------------------------------------------------------------
+    # get data button
+    data_btn = ttk.Button(leg_box, padding=4, text="Get Data", command=lambda: getData(leg_box))
+    data_btn.grid(column=2, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # save button
     save_btn = ttk.Button(leg_box, padding=4, text="Save", command= lambda: saveData(time))

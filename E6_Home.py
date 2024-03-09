@@ -3,6 +3,7 @@
 # Description:      E6B Home Page
 
 import tkinter as tk
+import DataExchange as svc
 import subprocess, threading, os, sys, json, signal
 
 from tkinter import ttk
@@ -13,6 +14,7 @@ from getWinds import getWindData
 from WindCorrectionAngle import runWindCorrection
 from Endurance import runEndurance
 from Altitudes import runAltitudes
+from displayResults import runDisplay
 
 # constants
 SAVE_FILE = "eb6_data.json"
@@ -39,7 +41,7 @@ def main():
     e6b = tk.Tk()
     e6b.title("E6B")
     width = 950
-    height = 550
+    height = 575
     screen_height = e6b.winfo_screenheight()
     x_coord = 50
     y_coord = (screen_height / 2) - 0.75 * (height)
@@ -72,7 +74,8 @@ def main():
                        " - Altitude: determine density altitude and pressure altitude for a specific elevation, temperature,\n" \
                        "   and barometer setting.\n" \
                        "         ------------------------------------------------------------------------------------------------------------------\n" \
-                       " - Conversions: perform useful conversions, like gallons to pounds for Avgas and Jet A.\n\n"
+                       " - Winds Aloft: retrieve wind and temperature data from aviationweather.gov for a specific region\n" \
+                       "    and altitude.\n\n"
 
         text_box.config(width=TEXT_BOX_WIDTH, padding=TEXT_BOX_PADDING, text=instructions, font=9)
 
@@ -90,9 +93,9 @@ def main():
     quit_btn    = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING,
                              text="Quit", command=killE6b)
     reset_btn   = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING,
-                             text="Reset")
+                             text="Reset", command=svc.clearData)
     summary_btn = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING,
-                             text="View Summary")
+                             text="View Summary", command=runDisplay)
     picture_window  = ttk.Label(e6b, width=TEXT_BOX_WIDTH, padding=TEXT_BOX_PADDING, image=img)
     wind_corr       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Wind Correction Angle", command=runWindCorrection)
@@ -108,13 +111,15 @@ def main():
                                  text="Altitude", command=runAltitudes)
     get_winds       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Get Winds Aloft", command=getWindData)
+    conversions       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+                                 text="Conversions")
 
     # position the buttons
     e6b.grid()
     quit_btn.grid(column=0, row=0)
     reset_btn.grid(column=0, row=1)
     picture_window.grid(column=1, row=0, rowspan=3)
-    text_box.grid(column=0, row=3, rowspan=5, columnspan=4)
+    text_box.grid(column=0, row=3, rowspan=6, columnspan=4)
     summary_btn.grid(column=3, row=0)
     wind_corr.grid(column=4, row=0)
     heading_corr.grid(column=4, row=1)
@@ -123,6 +128,7 @@ def main():
     endurance.grid(column=4, row=4)
     altitude.grid(column=4, row=5)
     get_winds.grid(column=4, row=6)
+    conversions.grid(column=4, row=7)
 
     # create the page menu
     menu = tk.Menu(e6b)
@@ -134,11 +140,8 @@ def main():
     filemenu.add_command(label='Exit', command=e6b.quit)
 
     # button state
-    reset_btn.state([ 'disabled' ])
-    summary_btn.state([ 'disabled' ])
     heading_corr.state([ 'disabled' ])
-    # endurance.state([ 'disabled' ])
-    # altitude.state([ 'disabled' ])
+    conversions.state([ 'disabled' ])
 
     print(legtime.configure().keys())
     e6b.mainloop()

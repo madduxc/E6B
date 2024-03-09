@@ -2,6 +2,7 @@
 # Date Created:     26 February 2024
 # Description:      E6B Fuel Required Calculator
 #                   Get Wind Data page
+
 import subprocess
 import requests
 import tkinter as tk
@@ -77,6 +78,10 @@ def getWindData(test=0):
     regionmenu.add_separator()
     regionmenu.add_command(label="Western Pacific", command=lambda: setRegion(region["Western Pacific"]))
     # -----------------------------------------------------------------------------------------------------------------
+    def resetData(box):
+        getWindData()
+        goHome(box)
+
     def callAPI(params):
         """
         Function to contact and send request to running microservice
@@ -139,6 +144,10 @@ def getWindData(test=0):
     home_btn = ttk.Button(wind_box, padding=4, text="Home", command=lambda: goHome(wind_box))
     home_btn.grid(column=0, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
+    # reset button
+    reset_btn = ttk.Button(wind_box, padding=4, text="Reset", command=lambda: resetData(wind_box))
+    reset_btn.grid(column=2, row=0, columnspan=2)
+    # -----------------------------------------------------------------------------------------------------------------
     # Region menu
     reg = tk.StringVar(wind_box)
     reg.set("Select a Region")
@@ -183,9 +192,9 @@ def getWindData(test=0):
     tk.Label(wind_box, text=" ", font=10).grid(column=0, row=7)
     # call API button
     get_wind_btn = ttk.Button(wind_box, padding=4, text="Get Winds Aloft", command=lambda: callAPI(options))
-    get_wind_btn.grid(column=0, row=8, columnspan=2, pady=5)
+    get_wind_btn.grid(column=0, row=7, columnspan=2, pady=5)
     # -----------------------------------------------------------------------------------------------------------------
-    tk.Label(wind_box, text="Wind and Temperature Data", font=10).grid(column=2, row=0, columnspan=9, padx=45)
+    tk.Label(wind_box, text="Wind and Temperature Data", font=10).grid(column=4, row=0, columnspan=9, padx=45)
 
     # -----------------------------------------------------------------------------------------------------------------
     # testing - if testing, open GUI window without function call

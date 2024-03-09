@@ -1,11 +1,34 @@
 # Author:           Charles D. Maddux
 # Date Created:     11 February 2024
-# Description:      Handle calls from E6B to save and retrieve data
+# Description:      Handle calls from E6B to save, clear, and retrieve data
 
 import json
 
 # constants
 SAVE_FILE = "eb6_data.json"
+
+def clearData():
+    """
+    Function to clear the data from json file and insert placeholder to prevent errors
+    :return: none
+    """
+
+    # declare & initialize variables
+    data = dict()
+
+    # open the .json file
+    try:
+        with open(SAVE_FILE, "w") as data_file:
+            # clear the file
+            data_file.truncate()
+            data["a"] = 0
+            d_val = json.dumps(data)
+            data_file.write(d_val)
+            data_file.close()
+
+    # handle a missing or inaccessible file
+    except FileNotFoundError:
+            print("File cannot be opened.")
 
 
 def saveData(key, pair, test=False):
@@ -25,7 +48,7 @@ def saveData(key, pair, test=False):
 
     # handle a missing or inaccessible file
     except FileNotFoundError:
-            print("File cannot be opened.")
+        print("File cannot be opened.")
 
     # add or overwrite the value in the dictionary
     data[key] = pair
@@ -48,9 +71,38 @@ def saveData(key, pair, test=False):
         print("File cannot be opened.")
 
 
-def getData():
+def getData(key):
     # future development
-    pass
+    # open the .json file
+    try:
+        with open(SAVE_FILE, "r") as data_file:
+            # populate the dictionary
+            data = json.load(data_file)
+            return data[key]
+
+    # handle a missing or inaccessible file
+    except FileNotFoundError:
+        print("File cannot be opened.")
+
+        return ''
+
+
+def getResultSummary():
+    """
+    Returns dictionary values from file to calling function
+    :return: (dict) -   data
+    """
+
+    # open the .json file
+    try:
+        with open(SAVE_FILE, "r") as data_file:
+            # populate the dictionary
+            data = json.load(data_file)
+            return data
+
+    # handle a missing or inaccessible file
+    except FileNotFoundError:
+        print("File cannot be opened.")
 
 
 def main():
@@ -59,11 +111,8 @@ def main():
     :return: none
     """
     saveData("testKey1", 999, True)
-
     saveData("testKey2", 42, True)
-
     saveData("testKey3", 2319, True)
-
     saveData("testKey1", 0, True)
 
 

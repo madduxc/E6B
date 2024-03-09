@@ -38,8 +38,8 @@ def runEndurance(test=0):
 
         # perform calculations (if values are present)
         try:
-            gas = int(usable_fuel.get())
-            consumption = int(fuel_burn.get())
+            gas = float(usable_fuel.get())
+            consumption = float(fuel_burn.get())
             total_time = gas / consumption
             hours = int(total_time)
             minutes = int(total_time % hours * 60)

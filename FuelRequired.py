@@ -58,6 +58,12 @@ def runFuelReq(test=0):
         svc.saveData(key, val)
 
     # -----------------------------------------------------------------------------------------------------------------
+    def getData(gas):
+        key = "Leg Time"
+        time_value = svc.getData(key)
+        time_flown.insert(1,round(float(time_value),1))
+
+    # -----------------------------------------------------------------------------------------------------------------
     def calculateFuelReq(gas):
         """
         Command to calculate fuel required value after inputs are collected
@@ -69,22 +75,25 @@ def runFuelReq(test=0):
 
         # perform calculations (if values are present)
         try:
-            minutes = int(time_flown.get())
+            minutes = float(time_flown.get())
             consumption = float(fuel_flow.get())
             gallons = consumption * minutes / 60
             fuel_used.insert(1, round(gallons, 1))
+            # add value to list
+            gas.append(gallons)
 
         # handle condition in which inputs are not present or incorrect format
         except:
             fuel_used.insert(1, "???")
 
-        # add value to list
-        gas.append(gallons)
-
     # -----------------------------------------------------------------------------------------------------------------
     # home button
     home_btn = ttk.Button(fuel_box, padding=4, text="Home", command=lambda: goHome(fuel_box))
     home_btn.grid(column=0, row=0, columnspan=2)
+    # -----------------------------------------------------------------------------------------------------------------
+    # get data button
+    data_btn = ttk.Button(fuel_box, padding=4, text="Get Data", command=lambda: getData(fuel_box))
+    data_btn.grid(column=2, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # save button
     save_btn = ttk.Button(fuel_box, padding=4, text="Save", command= lambda: saveData(gas))
