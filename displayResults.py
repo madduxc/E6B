@@ -10,6 +10,10 @@ import DataExchange as svc
 
 
 def runDisplay(test=0):
+    """
+    Function to display all results that were saved to a file during a session
+    :return: none
+    """
 
     # declare & initialize window
     results_box = tk.Tk()
@@ -46,6 +50,10 @@ def runDisplay(test=0):
 
 
 def main():
+    """
+    testing
+    :return: none
+    """
     runDisplay(1)
 
 

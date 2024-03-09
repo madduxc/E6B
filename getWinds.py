@@ -56,6 +56,11 @@ def getWindData(test=0):
     menu.add_cascade(label='Region', menu=regionmenu)
 
     def setRegion(region):
+        """
+        Add region to the options dictionary
+        :param region: (str)
+        :return: none
+        """
         options["region"] = region
 
     regionmenu.add_command(label="All Regions", command=lambda: setRegion(region["All Regions"]))
@@ -79,14 +84,20 @@ def getWindData(test=0):
     regionmenu.add_command(label="Western Pacific", command=lambda: setRegion(region["Western Pacific"]))
     # -----------------------------------------------------------------------------------------------------------------
     def resetData(box):
+        """
+        Function to reset the tool after data has been retrieved.
+        The easiest way to accomplish this is to restart the page (closing the old page in the background)
+        :param box: tk page
+        :return: none
+        """
         getWindData()
         goHome(box)
 
     def callAPI(params):
         """
         Function to contact and send request to running microservice
-        :param params:
-        :return:
+        :param params: (dictionary) - options for calling winds aloft data
+        :return: none
         """
         print("calling the server ...")
 
@@ -161,33 +172,31 @@ def getWindData(test=0):
 
     reg.trace('w', chooseRegion)
     # -----------------------------------------------------------------------------------------------------------------
-    # High Altitude menu
-    hAlt = tk.StringVar(wind_box)
-    hAlt.set("Select Altitude")
-    hAlt_menu = tk.OptionMenu(wind_box, hAlt, *altitude)
-    tk.Label(wind_box, text="High Altitude Limit").grid(column=0, row=3)
-    hAlt_menu.grid(column=0, row=4)
-
-    def chooseHighAlt(*args):
-        selected_hAlt = hAlt.get()
-        options["high_altitude"] = selected_hAlt
-        print(selected_hAlt)
-
-    hAlt.trace('w', chooseHighAlt)
-    # -----------------------------------------------------------------------------------------------------------------
     # Low Altitude menu
     lAlt = tk.StringVar(wind_box)
     lAlt.set("Select Altitude")
     lAlt_menu = tk.OptionMenu(wind_box, lAlt, *altitude)
-    tk.Label(wind_box, text="Low Altitude Limit").grid(column=0, row=5)
-    lAlt_menu.grid(column=0, row=6)
+    tk.Label(wind_box, text="Low Altitude Limit").grid(column=0, row=3)
+    lAlt_menu.grid(column=0, row=4)
 
     def chooseLowAlt(*args):
         selected_lAlt = lAlt.get()
         options["low_altitude"] = selected_lAlt
-        print(selected_lAlt)
 
     lAlt.trace('w', chooseLowAlt)
+    # -----------------------------------------------------------------------------------------------------------------
+    # High Altitude menu
+    hAlt = tk.StringVar(wind_box)
+    hAlt.set("Select Altitude")
+    hAlt_menu = tk.OptionMenu(wind_box, hAlt, *altitude)
+    tk.Label(wind_box, text="High Altitude Limit").grid(column=0, row=5)
+    hAlt_menu.grid(column=0, row=6)
+
+    def chooseHighAlt(*args):
+        selected_hAlt = hAlt.get()
+        options["high_altitude"] = selected_hAlt
+
+    hAlt.trace('w', chooseHighAlt)
     # -----------------------------------------------------------------------------------------------------------------
     tk.Label(wind_box, text=" ", font=10).grid(column=0, row=7)
     # call API button
@@ -205,6 +214,10 @@ def getWindData(test=0):
 
 
 def main():
+    """
+    testing
+    :return: none
+    """
     getWindData(1)
 
 

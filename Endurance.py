@@ -2,12 +2,21 @@
 # Date Created:     4 March 2024
 # Description:      E6B Endurance Calculator
 
+import DataExchange as svc
 import tkinter as tk
 from tkinter import ttk
 from goHome import goHome
 
 
 def runEndurance(test=0):
+    """
+    Function to calculate the run time (endurance) of an internal combustion engine given a specific amount of
+    fuel on board and a given fixed fuel flow rate.
+    Usable Fuel:        float   [gallons]           - user input
+    Fuel Flow Rate:     float   [gallons/hour]      - user input (or saved data)
+    Endurance:          float   [hours, minutes]    - output
+    :return: none
+    """
 
     time_box = tk.Tk()
     time_box.title("Endurance")
@@ -29,8 +38,17 @@ def runEndurance(test=0):
     filemenu.add_command(label='Home', command=lambda: goHome(time_box))
 
     # -----------------------------------------------------------------------------------------------------------------
+    def getData(tk):
+        key = "Fuel Flow"
+        fuel_value = svc.getData(key)
+        fuel_burn.delete(0, 100)
+        fuel_burn.insert(1, round(float(fuel_value), 1))
+    # -----------------------------------------------------------------------------------------------------------------
     def calculateEndurance():
-        print("FLAMINGOS")
+        """
+        Command to calculate endurance values after inputs are collected
+        :return: none
+        """
 
         # erase previously calculated values
         fuel_hrs.delete(0, 100)
@@ -55,6 +73,10 @@ def runEndurance(test=0):
     # home button
     home_btn = ttk.Button(time_box, padding=4, text="Home", command=lambda: goHome(time_box))
     home_btn.grid(column=0, row=0, columnspan=2)
+    # -----------------------------------------------------------------------------------------------------------------
+    # get data button
+    data_btn = ttk.Button(time_box, padding=4, text="Get Data", command=lambda: getData(time_box))
+    data_btn.grid(column=2, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # usable fuel entry
     # -----------------------------------------------------------------------------------------------------------------
@@ -110,6 +132,10 @@ def runEndurance(test=0):
 
 
 def main():
+    """
+    testing
+    :return: none
+    """
     runEndurance(1)
 
 

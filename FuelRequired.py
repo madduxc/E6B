@@ -11,7 +11,7 @@ from goHome import goHome
 def runFuelReq(test=0):
     """
     Function to calculate the minimum fuel required to fly a set period of time at a given fuel consumption rate
-    Time Flown:             float   [minutes]       - user input (or retrieve saved value)
+    Time Flown:             float   [minutes]       - user input (or saved data)
     Fuel Consumption Rate:  float   [gallons/hour]  - user input
     Fuel Required:          float   [gallons]       - output
     :return: none
@@ -23,7 +23,7 @@ def runFuelReq(test=0):
     # declare & initialize window
     fuel_box = tk.Tk()
     fuel_box.title("Fuel Required")
-    width = 630
+    width = 650
     height = 125
 
     # calculate page size and placement
@@ -50,18 +50,22 @@ def runFuelReq(test=0):
         :return: none
         """
         # declare and initialize variables
-        key = "Fuel Required"
+        key1 = "Fuel Required"
+        key2 = "Fuel Flow"
         index = len(gas) - 1
-        val = gas[index]
+        val1 = gas[index]
+        val2 = float(fuel_flow.get())
 
         # send data to be written
-        svc.saveData(key, val)
+        svc.saveData(key1, val1)
+        svc.saveData(key2, val2)
 
     # -----------------------------------------------------------------------------------------------------------------
-    def getData(gas):
+    def getData(tk):
         key = "Leg Time"
         time_value = svc.getData(key)
-        time_flown.insert(1,round(float(time_value),1))
+        time_flown.delete(0, 100)
+        time_flown.insert(1, round(float(time_value), 1))
 
     # -----------------------------------------------------------------------------------------------------------------
     def calculateFuelReq(gas):
@@ -147,6 +151,10 @@ def runFuelReq(test=0):
 
 
 def main():
+    """
+    testing
+    :return: none
+    """
     runFuelReq(1)
 
 

@@ -13,7 +13,7 @@ def runLegTime(test=0):
     Function to calculate the time required to fly a set distance at a given speed over the ground
     conversion from airspeed to ground speed is required prior to this step
     Distance:       float   [nautical miles]       - user input
-    Ground Speed:   float   [nautical miles/hour]  - user input (or retrieve saved value)
+    Ground Speed:   float   [nautical miles/hour]  - user input (or saved data)
     Time Required:  float   [minutes]               - output
     :return: none
     """
@@ -24,7 +24,7 @@ def runLegTime(test=0):
     # declare & initialize window
     leg_box = tk.Tk()
     leg_box.title("Leg Time")
-    width = 690
+    width = 770
     height = 125
 
     # calculate page size and placement
@@ -58,10 +58,17 @@ def runLegTime(test=0):
         # send data to be written
         svc.saveData(key, pair)
     # -----------------------------------------------------------------------------------------------------------------
-    def getData(time):
+    def getData(tk):
+        """
+        retrieve data from storage to pre-populate input values
+        :param tk: tkinter page
+        :return: none
+        """
+
         key = "Ground Speed"
         speed_value = svc.getData(key)
-        speed.insert(1,round(float(speed_value),1))
+        speed.delete(0, 100)
+        speed.insert(1, round(float(speed_value), 1))
     # -----------------------------------------------------------------------------------------------------------------
     def calculateLegTime(time):
         """
@@ -114,7 +121,7 @@ def runLegTime(test=0):
 
     # ground speed entry
     # -----------------------------------------------------------------------------------------------------------------
-    spd = ttk.Label(leg_box, text="Enter the airspeed on the Leg: ", padding=3, font=10)
+    spd = ttk.Label(leg_box, text="Enter the ground speed on the Leg: ", padding=3, font=10)
     spd.grid(column=0, row=2)
 
     speed = ttk.Entry(leg_box, width=8, font=10)
@@ -147,6 +154,10 @@ def runLegTime(test=0):
 
 
 def main():
+    """
+    testing
+    :return: none
+    """
     runLegTime(1)
 
 

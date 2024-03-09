@@ -8,18 +8,29 @@ from goHome import goHome
 
 
 def runAltitudes(test=0):
+    """
+    Function to calculate the pressure altitude and density altitude of a location (typically an airport).
+    Pressure Altitude: the altitude above sea level based on standard atmospheric conditions (temperature and pressure)
+    Density altitude: the altitude above sea level adjusted for non-standard temperature, assuming dry air (humidity = 0)
+    Field Elevation:    float   [feet]      - user input
+    Altimeter Setting:  float   [in-hg]     - user input
+    Temperature:        float   [deg C]     - user input
+    Pressure Altitude:  float   [feet]      - output
+    Density Altitude:   float   [feet]      - output
+    :return: none
+    """
 
     alt_box = tk.Tk()
     alt_box.title("Endurance")
 
-    width = 750
-    height = 175
+    width = 600
+    height = 150
 
     # calculate page size and placement
     screen_width = alt_box.winfo_screenwidth()
     screen_height = alt_box.winfo_screenheight()
     x_coord = screen_width - (width + 20)
-    y_coord = (screen_height / 2) + height
+    y_coord = (screen_height / 2) + 1.2 * height
     alt_box.geometry("%dx%d+%d+%d" % (width, height, x_coord, y_coord))
 
     # create the page menu
@@ -30,6 +41,10 @@ def runAltitudes(test=0):
     filemenu.add_command(label='Home', command=lambda: goHome(alt_box))
 
     def calculateAltitudes():
+        """
+        Command to pressure and density altitude values after inputs are collected
+        :return: none
+        """
 
         # declare & initialize variables
         Rd = 287.05             # [J/(kg K] dry air gas constant
@@ -155,6 +170,10 @@ def runAltitudes(test=0):
 
 
 def main():
+    """
+    testing
+    :return: nine
+    """
     runAltitudes(1)
 
 

@@ -72,24 +72,30 @@ def saveData(key, pair, test=False):
 
 
 def getData(key):
-    # future development
+    """
+    Function to retrieve specific value from the data file, given its json key
+    :param key:     (str)   dictionary key
+    :return: value  (float) dictionary value
+    """
+
     # open the .json file
     try:
         with open(SAVE_FILE, "r") as data_file:
             # populate the dictionary
-            data = json.load(data_file)
-            return data[key]
+            try:
+                data = json.load(data_file)
+                return data[key]
+            except:
+                return 0
 
     # handle a missing or inaccessible file
     except FileNotFoundError:
         print("File cannot be opened.")
 
-        return ''
-
 
 def getResultSummary():
     """
-    Returns dictionary values from file to calling function
+    Returns collection of all saved dictionary values from file to calling function
     :return: (dict) -   data
     """
 

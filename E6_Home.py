@@ -4,8 +4,6 @@
 
 import tkinter as tk
 import DataExchange as svc
-import subprocess, threading, os, sys, json, signal
-
 from tkinter import ttk
 from PIL import ImageTk
 from LegTime import runLegTime
@@ -17,7 +15,7 @@ from Altitudes import runAltitudes
 from displayResults import runDisplay
 
 # constants
-SAVE_FILE = "eb6_data.json"
+# SAVE_FILE = "eb6_data.json"
 TEXT_BOX_WIDTH      = 75
 MENU_BUTTON_WIDTH   = 30
 MAIN_BUTTON_WIDTH   = 20
@@ -31,7 +29,8 @@ def main():
     E6B Flight Computer. For manual cross country flight planning.  Home screen.
         - House and format buttons that lead to other screens.
         - Display menu of instruction for how to use the tool
-        - (future) retrieve and display summary of results
+        - Call other functions to perform calculations
+        - Retrieve, display, and reset summary of results
         - (future) track leg profiles
         - (future) build a trip
     :return: none
@@ -79,6 +78,34 @@ def main():
 
         text_box.config(width=TEXT_BOX_WIDTH, padding=TEXT_BOX_PADDING, text=instructions, font=9)
 
+    # create the file menu
+    menu = tk.Menu(e6b)
+    e6b.config(menu=menu)
+    filemenu = tk.Menu(menu)
+    menu.add_cascade(label='File', menu=filemenu)
+    filemenu.add_command(label='Exit', command=e6b.quit)
+
+    # create the page menu
+    pagemenu = tk.Menu(menu)
+    menu.add_cascade(label='Tools', menu=pagemenu)
+    pagemenu.add_command(label='Wind Correction', command=runWindCorrection)
+    pagemenu.add_separator()
+    pagemenu.add_command(label='Winds Aloft', command=getWindData)
+    pagemenu.add_separator()
+    pagemenu.add_command(label='Leg Time', command=runLegTime)
+    pagemenu.add_separator()
+    pagemenu.add_command(label='Fuel Required', command=runFuelReq)
+    pagemenu.add_separator()
+    pagemenu.add_command(label='Endurance', command=runEndurance)
+    pagemenu.add_separator()
+    pagemenu.add_command(label='Altitudes', command=runAltitudes)
+
+    # create the summary menu
+    resultsmenu = tk.Menu(menu)
+    menu.add_cascade(label='Results', menu=resultsmenu)
+    resultsmenu.add_command(label='Summary', command=runDisplay)
+    resultsmenu.add_separator()
+    resultsmenu.add_command(label='Reset', command=svc.clearData)
     # populate the splash/image at the top of the tool
     try:
         img = ImageTk.PhotoImage(file='images/engines.jpg')
@@ -129,15 +156,6 @@ def main():
     altitude.grid(column=4, row=5)
     get_winds.grid(column=4, row=6)
     conversions.grid(column=4, row=7)
-
-    # create the page menu
-    menu = tk.Menu(e6b)
-    e6b.config(menu=menu)
-    filemenu = tk.Menu(menu)
-    menu.add_cascade(label='File', menu=filemenu)
-    filemenu.add_command(label='Save')
-    filemenu.add_separator()
-    filemenu.add_command(label='Exit', command=e6b.quit)
 
     # button state
     heading_corr.state([ 'disabled' ])

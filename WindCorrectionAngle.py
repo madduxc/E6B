@@ -81,7 +81,7 @@ def runWindCorrection(test=0):
 
     def calculateWindCorrection(wcang, gspd, thdg):
         """
-        Command to calculate wind correction angle, true heading, and groundspeed values after inputs are collected
+        Command to calculate wind correction angle, true heading, and ground speed values after inputs are collected
         :param wcang: (list) collection of calculated wca values
         :param gspd:  (list) collection of calculated gs values
         :param thdg:  (list) collection of calculated th values
@@ -227,6 +227,10 @@ def runWindCorrection(test=0):
 
 
 def main():
+    """
+    testing
+    :return: none
+    """
     runWindCorrection(1)
 
 
