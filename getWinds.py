@@ -1,13 +1,13 @@
 # Author:           Charles D. Maddux
 # Date Created:     26 February 2024
-# Description:      E6B Fuel Required Calculator
+# Description:      E6B Calculator
 #                   Get Wind Data page
 
 import subprocess
 import requests
 import tkinter as tk
 from tkinter import ttk
-from goHome import goHome
+from Utilities import goHome
 
 ipv4 = '127.0.0.1'  # local host
 port = 8080         # default port
@@ -19,10 +19,6 @@ def getWindData(test=0):
     :return: none
     """
 
-    # launch data exchange service
-    def threadLaunch():
-        subprocess.run(["python", "..\Aviation_Weather_API_Tool\windsaloft_microservice.py"])
-
     # declare & initialize window
     options = {"region": None, "low_altitude": None, "high_altitude": None, "flight_time": None, "flight_date": None}
     region = {"All Regions": "all", "North East": "bos", "South East": "mia", "North Central": "chi",
@@ -32,28 +28,14 @@ def getWindData(test=0):
                 "18000", "24000", "30000", "34000", "39000", "45000", "53000"]
 
     # set up GUI window
-    wind_box = tk.Tk()
-    wind_box.title("Winds and Temperature")
-    wind_box.config(pady=3, padx=5)
+    winds = tk.Tk()
+    winds.title("Winds and Temperature")
+    winds.config(pady=3, padx=5)
 
     # calculate page size and placement
     x_coord = 20
     y_coord = 20
-    wind_box.geometry("+%d+%d" % (x_coord, y_coord))
-
-    # create the page menu
-    menu = tk.Menu(wind_box)
-    wind_box.config(menu=menu)
-    # -----------------------------------------------------------------------------------------------------------------
-    # the File dropdown
-    filemenu = tk.Menu(menu)
-    menu.add_cascade(label='File', menu=filemenu)
-    filemenu.add_command(label='Home', command=lambda: goHome(wind_box))
-
-    # -----------------------------------------------------------------------------------------------------------------
-    # Region
-    regionmenu = tk.Menu(menu)
-    menu.add_cascade(label='Region', menu=regionmenu)
+    winds.geometry("+%d+%d" % (x_coord, y_coord))
 
     def setRegion(region):
         """
@@ -63,25 +45,6 @@ def getWindData(test=0):
         """
         options["region"] = region
 
-    regionmenu.add_command(label="All Regions", command=lambda: setRegion(region["All Regions"]))
-    regionmenu.add_separator()
-    regionmenu.add_command(label="North East", command=lambda: setRegion(region["North East"]))
-    regionmenu.add_separator()
-    regionmenu.add_command(label="South East", command=lambda: setRegion(region["South East"]))
-    regionmenu.add_separator()
-    regionmenu.add_command(label="North Central", command=lambda: setRegion(region["North Central"]))
-    regionmenu.add_separator()
-    regionmenu.add_command(label="South Central", command=lambda: setRegion(region["South Central"]))
-    regionmenu.add_separator()
-    regionmenu.add_command(label="Rocky Mountain", command=lambda: setRegion(region["Rocky Mountain"]))
-    regionmenu.add_separator()
-    regionmenu.add_command(label="Pacific Coast", command=lambda: setRegion(region["Pacific Coast"]))
-    regionmenu.add_separator()
-    regionmenu.add_command(label="Alaska", command=lambda: setRegion(region["Alaska"]))
-    regionmenu.add_separator()
-    regionmenu.add_command(label="Hawaii", command=lambda: setRegion(region["Hawaii"]))
-    regionmenu.add_separator()
-    regionmenu.add_command(label="Western Pacific", command=lambda: setRegion(region["Western Pacific"]))
     # -----------------------------------------------------------------------------------------------------------------
     def resetData(box):
         """
@@ -134,11 +97,11 @@ def getWindData(test=0):
 
             # add labels to buttons
             for val in range(len(labels)):
-                ttk.Button(wind_box, padding=1, text=labels[val]).grid(column=val+2, row=1, padx=1, pady=1)
+                ttk.Button(winds, padding=1, text=labels[val]).grid(column=val+2, row=1, padx=1, pady=1)
             # add values to cells
             for row in range(len(cells) - 1):
                 for col in range(len(labels)):
-                    ttk.Button(wind_box, padding=1, text=cells[row][col]).grid(column=col+2, row=row+2)
+                    ttk.Button(winds, padding=1, text=cells[row][col]).grid(column=col+2, row=row+2)
 
         # handle unsuccessful response
         elif response.status_code == 400:
@@ -150,20 +113,53 @@ def getWindData(test=0):
             print(response.status_code)
             raise NotImplementedError
 
+
+    # create the page menu
+    menu = tk.Menu(winds)
+    winds.config(menu=menu)
+    # -----------------------------------------------------------------------------------------------------------------
+    # the File dropdown
+    file_menu = tk.Menu(menu)
+    menu.add_cascade(label='File', menu=file_menu)
+    file_menu.add_command(label='Home', command=lambda: goHome(winds))
+
+    # -----------------------------------------------------------------------------------------------------------------
+    # Region menu
+    region_menu = tk.Menu(menu)
+    menu.add_cascade(label='Region', menu=region_menu)
+    region_menu.add_command(label="All Regions", command=lambda: setRegion(region["All Regions"]))
+    region_menu.add_separator()
+    region_menu.add_command(label="North East", command=lambda: setRegion(region["North East"]))
+    region_menu.add_separator()
+    region_menu.add_command(label="South East", command=lambda: setRegion(region["South East"]))
+    region_menu.add_separator()
+    region_menu.add_command(label="North Central", command=lambda: setRegion(region["North Central"]))
+    region_menu.add_separator()
+    region_menu.add_command(label="South Central", command=lambda: setRegion(region["South Central"]))
+    region_menu.add_separator()
+    region_menu.add_command(label="Rocky Mountain", command=lambda: setRegion(region["Rocky Mountain"]))
+    region_menu.add_separator()
+    region_menu.add_command(label="Pacific Coast", command=lambda: setRegion(region["Pacific Coast"]))
+    region_menu.add_separator()
+    region_menu.add_command(label="Alaska", command=lambda: setRegion(region["Alaska"]))
+    region_menu.add_separator()
+    region_menu.add_command(label="Hawaii", command=lambda: setRegion(region["Hawaii"]))
+    region_menu.add_separator()
+    region_menu.add_command(label="Western Pacific", command=lambda: setRegion(region["Western Pacific"]))
     # -----------------------------------------------------------------------------------------------------------------
     # home button
-    home_btn = ttk.Button(wind_box, padding=4, text="Home", command=lambda: goHome(wind_box))
+    home_btn = ttk.Button(winds, padding=4, text="Home", command=lambda: goHome(winds))
     home_btn.grid(column=0, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # reset button
-    reset_btn = ttk.Button(wind_box, padding=4, text="Reset", command=lambda: resetData(wind_box))
+    reset_btn = ttk.Button(winds, padding=4, text="Reset", command=lambda: resetData(winds))
     reset_btn.grid(column=2, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # Region menu
-    reg = tk.StringVar(wind_box)
+    reg = tk.StringVar(winds)
     reg.set("Select a Region")
-    region_menu = tk.OptionMenu(wind_box, reg, *region)
-    tk.Label(wind_box, text="Region").grid(column=0, row=1)
+    region_menu = tk.OptionMenu(winds, reg, *region)
+    tk.Label(winds, text="Region").grid(column=0, row=1)
     region_menu.grid(column=0, row=2)
 
     def chooseRegion(*args):
@@ -173,44 +169,43 @@ def getWindData(test=0):
     reg.trace('w', chooseRegion)
     # -----------------------------------------------------------------------------------------------------------------
     # Low Altitude menu
-    lAlt = tk.StringVar(wind_box)
-    lAlt.set("Select Altitude")
-    lAlt_menu = tk.OptionMenu(wind_box, lAlt, *altitude)
-    tk.Label(wind_box, text="Low Altitude Limit").grid(column=0, row=3)
-    lAlt_menu.grid(column=0, row=4)
+    low_alt = tk.StringVar(winds)
+    low_alt.set("Select Altitude")
+    low_alt_menu = tk.OptionMenu(winds, low_alt, *altitude)
+    tk.Label(winds, text="Low Altitude Limit").grid(column=0, row=3)
+    low_alt_menu.grid(column=0, row=4)
 
     def chooseLowAlt(*args):
-        selected_lAlt = lAlt.get()
-        options["low_altitude"] = selected_lAlt
+        selected_low_alt = low_alt.get()
+        options["low_altitude"] = selected_low_alt
 
-    lAlt.trace('w', chooseLowAlt)
+    low_alt.trace('w', chooseLowAlt)
     # -----------------------------------------------------------------------------------------------------------------
     # High Altitude menu
-    hAlt = tk.StringVar(wind_box)
-    hAlt.set("Select Altitude")
-    hAlt_menu = tk.OptionMenu(wind_box, hAlt, *altitude)
-    tk.Label(wind_box, text="High Altitude Limit").grid(column=0, row=5)
-    hAlt_menu.grid(column=0, row=6)
+    high_alt = tk.StringVar(winds)
+    high_alt.set("Select Altitude")
+    high_alt_menu = tk.OptionMenu(winds, high_alt, *altitude)
+    tk.Label(winds, text="High Altitude Limit").grid(column=0, row=5)
+    high_alt_menu.grid(column=0, row=6)
 
-    def chooseHighAlt(*args):
-        selected_hAlt = hAlt.get()
-        options["high_altitude"] = selected_hAlt
+    def chooseHigh_alt(*args):
+        selected_high_alt = high_alt.get()
+        options["high_altitude"] = selected_high_alt
 
-    hAlt.trace('w', chooseHighAlt)
+    high_alt.trace('w', chooseHigh_alt)
     # -----------------------------------------------------------------------------------------------------------------
-    tk.Label(wind_box, text=" ", font=10).grid(column=0, row=7)
+    tk.Label(winds, text=" ", font=10).grid(column=0, row=7)
     # call API button
-    get_wind_btn = ttk.Button(wind_box, padding=4, text="Get Winds Aloft", command=lambda: callAPI(options))
+    get_wind_btn = ttk.Button(winds, padding=4, text="Get Winds Aloft", command=lambda: callAPI(options))
     get_wind_btn.grid(column=0, row=7, columnspan=2, pady=5)
     # -----------------------------------------------------------------------------------------------------------------
-    tk.Label(wind_box, text="Wind and Temperature Data", font=10).grid(column=4, row=0, columnspan=9, padx=45)
+    tk.Label(winds, text="Wind and Temperature Data", font=10).grid(column=4, row=0, columnspan=9, padx=45)
 
     # -----------------------------------------------------------------------------------------------------------------
     # testing - if testing, open GUI window without function call
     if test == 1:
         print("In development - Wind Data Microservices")
-        wind_box.mainloop()
-
+        winds.mainloop()
 
 
 def main():

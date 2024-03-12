@@ -45,6 +45,7 @@ def saveData(key, pair, test=False):
         with open(SAVE_FILE, "r+") as data_file:
             # populate the dictionary
             data = json.load(data_file)
+            data_file.close()
 
     # handle a missing or inaccessible file
     except FileNotFoundError:
@@ -63,7 +64,6 @@ def saveData(key, pair, test=False):
             # write dictionary to .json
             d_val = json.dumps(data)
             data_file.write(d_val)
-
             data_file.close()
 
     # handle a missing or inaccessible file
@@ -84,6 +84,7 @@ def getData(key):
             # populate the dictionary
             try:
                 data = json.load(data_file)
+                data_file.close()
                 return data[key]
             except:
                 return 0
@@ -104,6 +105,7 @@ def getResultSummary():
         with open(SAVE_FILE, "r") as data_file:
             # populate the dictionary
             data = json.load(data_file)
+            data_file.close()
             return data
 
     # handle a missing or inaccessible file

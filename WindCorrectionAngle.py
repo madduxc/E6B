@@ -1,13 +1,13 @@
 # Author:           Charles D. Maddux
 # Date Created:     1 March 2024
-# Description:      E6B Fuel Required Calculator
+# Description:      E6B Calculator
 #                   Wind Correction Angle Page
 
 import math
 import DataExchange as svc
 import tkinter as tk
 from tkinter import ttk
-from goHome import goHome
+from Utilities import goHome
 
 
 def runWindCorrection(test=0):
@@ -42,18 +42,7 @@ def runWindCorrection(test=0):
     y_coord = (screen_height / 2) - 2.35 * height
     wind_corr_box.geometry("%dx%d+%d+%d" % (width, height, x_coord, y_coord))
 
-    # create the page menu
-    menu = tk.Menu(wind_corr_box)
-    wind_corr_box.config(menu=menu)
     # -----------------------------------------------------------------------------------------------------------------
-    # 'File' menu
-    filemenu = tk.Menu(menu)
-    menu.add_cascade(label='File', menu=filemenu)
-    filemenu.add_command(label='Save', command= lambda: saveData(th, gs))
-    filemenu.add_separator()
-    filemenu.add_command(label='Home', command=lambda: goHome(wind_corr_box))
-    # -----------------------------------------------------------------------------------------------------------------
-
     # call DataExchange to save the data just calculated
     def saveData(th, gs):
         """
@@ -78,7 +67,6 @@ def runWindCorrection(test=0):
         svc.saveData(gs_key, gs_val)
 
     # -----------------------------------------------------------------------------------------------------------------
-
     def calculateWindCorrection(wcang, gspd, thdg):
         """
         Command to calculate wind correction angle, true heading, and ground speed values after inputs are collected
@@ -112,16 +100,27 @@ def runWindCorrection(test=0):
             # calculate ground speed
             gnd_spd = true_as * math.cos(math.radians(wnd_corr)) + wnd_spd * math.cos(delta)
             ground_speed.insert(1, round(gnd_spd, 1))
+
+            # add values to lists
+            wcang.append(wnd_corr)
+            thdg.append(tru_hdg)
+            gspd.append(gnd_spd)
+
         except:
             wind_angle.insert(1, "???")
             true_heading.insert(1, "???")
             ground_speed.insert(1, "???")
 
-        # add values to lists
-        wcang.append(wnd_corr)
-        thdg.append(tru_hdg)
-        gspd.append(gnd_spd)
-
+    # create the page menu
+    menu = tk.Menu(wind_corr_box)
+    wind_corr_box.config(menu=menu)
+    # -----------------------------------------------------------------------------------------------------------------
+    # 'File' menu
+    file_menu = tk.Menu(menu)
+    menu.add_cascade(label='File', menu=file_menu)
+    file_menu.add_command(label='Home', command=lambda: goHome(wind_corr_box))
+    file_menu.add_separator()
+    file_menu.add_command(label='Save', command= lambda: saveData(th, gs))
     # -----------------------------------------------------------------------------------------------------------------
     # home button
     home_btn = ttk.Button(wind_corr_box, padding=4, text="Home", command=lambda: goHome(wind_corr_box))

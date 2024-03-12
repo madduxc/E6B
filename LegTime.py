@@ -1,11 +1,12 @@
 # Author:           Charles D. Maddux
 # Date Created:     10 February 2024
-# Description:      E6B Leg Time Calculator
+# Description:      E6B Calculator
+#                   Leg Time page
 
 import tkinter as tk
 import DataExchange as svc
 from tkinter import ttk
-from goHome import goHome
+from Utilities import goHome
 
 
 def runLegTime(test=0):
@@ -22,26 +23,17 @@ def runLegTime(test=0):
     time = []
 
     # declare & initialize window
-    leg_box = tk.Tk()
-    leg_box.title("Leg Time")
+    leg = tk.Tk()
+    leg.title("Leg Time")
     width = 770
     height = 125
 
     # calculate page size and placement
-    screen_width = leg_box.winfo_screenwidth()
-    screen_height = leg_box.winfo_screenheight()
+    screen_width = leg.winfo_screenwidth()
+    screen_height = leg.winfo_screenheight()
     x_coord = screen_width - (width + 20)
     y_coord = (screen_height / 2) - 2 * height
-    leg_box.geometry("%dx%d+%d+%d" % (width, height, x_coord, y_coord))
-
-    # create the page menu
-    menu = tk.Menu(leg_box)
-    leg_box.config(menu=menu)
-    filemenu = tk.Menu(menu)
-    menu.add_cascade(label='File', menu=filemenu)
-    filemenu.add_command(label='Save', command=lambda: saveData(time))
-    filemenu.add_separator()
-    filemenu.add_command(label='Home', command=lambda: goHome(leg_box))
+    leg.geometry("%dx%d+%d+%d" % (width, height, x_coord, y_coord))
 
     # -----------------------------------------------------------------------------------------------------------------
     def saveData(time):
@@ -70,6 +62,7 @@ def runLegTime(test=0):
         speed.delete(0, 100)
         speed.insert(1, round(float(speed_value), 1))
     # -----------------------------------------------------------------------------------------------------------------
+
     def calculateLegTime(time):
         """
         Command to calculate time required value after inputs are collected
@@ -93,64 +86,74 @@ def runLegTime(test=0):
         except:
             leg_time.insert(1, "???")
 
+    # create the page menu
+    menu = tk.Menu(leg)
+    leg.config(menu=menu)
+    file_menu = tk.Menu(menu)
+    menu.add_cascade(label='File', menu=file_menu)
+    file_menu.add_command(label='Home', command=lambda: goHome(leg))
+    file_menu.add_separator()
+    file_menu.add_command(label='Save', command=lambda: saveData(time))
+    file_menu.add_separator()
+    file_menu.add_command(label='Get Data', command=lambda: getData(leg))
     # -----------------------------------------------------------------------------------------------------------------
     # home button
-    home_btn = ttk.Button(leg_box, padding=4, text="Home", command=lambda: goHome(leg_box))
+    home_btn = ttk.Button(leg, padding=4, text="Home", command=lambda: goHome(leg))
     home_btn.grid(column=0, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # get data button
-    data_btn = ttk.Button(leg_box, padding=4, text="Get Data", command=lambda: getData(leg_box))
+    data_btn = ttk.Button(leg, padding=4, text="Get Data", command=lambda: getData(leg))
     data_btn.grid(column=2, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # save button
-    save_btn = ttk.Button(leg_box, padding=4, text="Save", command= lambda: saveData(time))
+    save_btn = ttk.Button(leg, padding=4, text="Save", command= lambda: saveData(time))
     save_btn.grid(column=4, row=0, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # distance entry
     # -----------------------------------------------------------------------------------------------------------------
-    dist = ttk.Label(leg_box, text="Enter the distance of the Leg: ", padding=3, font=10)
+    dist = ttk.Label(leg, text="Enter the distance of the Leg: ", padding=3, font=10)
     dist.grid(column=0, row=1)
 
-    distance = ttk.Entry(leg_box, width=8, font=10)
+    distance = ttk.Entry(leg, width=8, font=10)
     distance.insert(1, "")
     distance.grid(column=1, row=1)
 
-    d_units = ttk.Label(leg_box, text=" nm    ", font=10)
+    d_units = ttk.Label(leg, text=" nm    ", font=10)
     d_units.grid(column=2, row=1)
     # -----------------------------------------------------------------------------------------------------------------
 
     # ground speed entry
     # -----------------------------------------------------------------------------------------------------------------
-    spd = ttk.Label(leg_box, text="Enter the ground speed on the Leg: ", padding=3, font=10)
+    spd = ttk.Label(leg, text="Enter the ground speed on the Leg: ", padding=3, font=10)
     spd.grid(column=0, row=2)
 
-    speed = ttk.Entry(leg_box, width=8, font=10)
+    speed = ttk.Entry(leg, width=8, font=10)
     speed.insert(1, "")
     speed.grid(column=1, row=2)
 
-    s_units = ttk.Label(leg_box, text=" kts   ", font=10)
+    s_units = ttk.Label(leg, text=" kts   ", font=10)
     s_units.grid(column=2, row=2)
     # -----------------------------------------------------------------------------------------------------------------
     # calculate button
     # -----------------------------------------------------------------------------------------------------------------
-    btn = ttk.Button(leg_box, padding=3, text="Calculate", command= lambda: calculateLegTime(time))
+    btn = ttk.Button(leg, padding=3, text="Calculate", command= lambda: calculateLegTime(time))
     btn.grid(column=1, row=3, columnspan=2)
     # -----------------------------------------------------------------------------------------------------------------
     # return calculated value
-    leg = ttk.Label(leg_box, text="The time required for the Leg is: ", font=10)
-    leg.grid(column=4, row=1)
+    leg_val = ttk.Label(leg, text="The time required for the Leg is: ", font=10)
+    leg_val.grid(column=4, row=1)
 
-    leg_time = ttk.Entry(leg_box, width=8, font=10)
+    leg_time = ttk.Entry(leg, width=8, font=10)
     leg_time.insert(1, "")
     leg_time.grid(column=5, row=1)
 
-    t_units = ttk.Label(leg_box, text=" mins ", font=10)
+    t_units = ttk.Label(leg, text=" mins ", font=10)
     t_units.grid(column=6, row=1)
     # -----------------------------------------------------------------------------------------------------------------
     # testing - if testing, open GUI window without function call
     if test == 1:
         print("In development - Leg Time")
-        leg_box.mainloop()
+        leg.mainloop()
 
 
 def main():

@@ -15,7 +15,6 @@ from Altitudes import runAltitudes
 from displayResults import runDisplay
 
 # constants
-# SAVE_FILE = "eb6_data.json"
 TEXT_BOX_WIDTH      = 75
 MENU_BUTTON_WIDTH   = 30
 MAIN_BUTTON_WIDTH   = 20
@@ -46,9 +45,11 @@ def main():
     y_coord = (screen_height / 2) - 0.75 * (height)
     e6b.geometry("%dx%d+%d+%d" % (width, height, x_coord, y_coord))
 
+    # -----------------------------------------------------------------------------------------------------------------
     def killE6b():
         e6b.quit()
 
+    # -----------------------------------------------------------------------------------------------------------------
     # command to print instructions to a textbox
     def homeScreen():
         """
@@ -59,53 +60,57 @@ def main():
         # declare and initialize variables
         instructions = "\n                                        Welcome to the Desktop E6B Flight Computer.\n" \
                        "         ------------------------------------------------------------------------------------------------------------------\n" \
-                       " - Wind Correction Angle: determine the effect different winds will have on your flight path and\n" \
-                       "    ground speed at different airspeeds.\n" \
+                       " - Wind Correction Angle: determine the effect different winds will have on your flight " \
+                       "path and\n   ground speed at different airspeeds.\n" \
                        "         ------------------------------------------------------------------------------------------------------------------\n" \
                        " - Heading Correction: determine the flight path correction due to winds in flight.\n" \
                        "         ------------------------------------------------------------------------------------------------------------------\n" \
-                       " - Leg Time:  determine the time it will take to travel your leg distance at a given groundspeed.\n" \
+                       " - Leg Time:  determine the time it will take to travel your leg distance at a " \
+                       "given groundspeed.\n" \
                        "         ------------------------------------------------------------------------------------------------------------------\n" \
-                       " - Fuel Required: determine the amount of fuel for a given distance at a specified fuel burn.\n" \
+                       " - Fuel Required: determine the amount of fuel for a given distance at a specified " \
+                       "fuel burn.\n" \
                        "         ------------------------------------------------------------------------------------------------------------------\n" \
-                       " - Endurance: calculate your time aloft for a specific amount of fuel and a set rate of consumption.\n" \
+                       " - Endurance: calculate your time aloft for a specific amount of fuel and a set " \
+                       "rate of consumption.\n" \
                        "         ------------------------------------------------------------------------------------------------------------------\n" \
-                       " - Altitude: determine density altitude and pressure altitude for a specific elevation, temperature,\n" \
-                       "   and barometer setting.\n" \
+                       " - Altitude: determine density altitude and pressure altitude for a specific elevation, " \
+                       "temperature,\n   and barometer setting.\n" \
                        "         ------------------------------------------------------------------------------------------------------------------\n" \
-                       " - Winds Aloft: retrieve wind and temperature data from aviationweather.gov for a specific region\n" \
-                       "    and altitude.\n\n"
-
+                       " - Winds Aloft: retrieve wind and temperature data from aviationweather.gov for a " \
+                       "specific region\n   and altitude.\n\n"
         text_box.config(width=TEXT_BOX_WIDTH, padding=TEXT_BOX_PADDING, text=instructions, font=9)
 
+    # -----------------------------------------------------------------------------------------------------------------
     # create the file menu
     menu = tk.Menu(e6b)
     e6b.config(menu=menu)
-    filemenu = tk.Menu(menu)
-    menu.add_cascade(label='File', menu=filemenu)
-    filemenu.add_command(label='Exit', command=e6b.quit)
+    file_menu = tk.Menu(menu)
+    menu.add_cascade(label='File', menu=file_menu)
+    file_menu.add_command(label='Exit', command=e6b.quit)
 
     # create the page menu
-    pagemenu = tk.Menu(menu)
-    menu.add_cascade(label='Tools', menu=pagemenu)
-    pagemenu.add_command(label='Wind Correction', command=runWindCorrection)
-    pagemenu.add_separator()
-    pagemenu.add_command(label='Winds Aloft', command=getWindData)
-    pagemenu.add_separator()
-    pagemenu.add_command(label='Leg Time', command=runLegTime)
-    pagemenu.add_separator()
-    pagemenu.add_command(label='Fuel Required', command=runFuelReq)
-    pagemenu.add_separator()
-    pagemenu.add_command(label='Endurance', command=runEndurance)
-    pagemenu.add_separator()
-    pagemenu.add_command(label='Altitudes', command=runAltitudes)
+    page_menu = tk.Menu(menu)
+    menu.add_cascade(label='Tools', menu=page_menu)
+    page_menu.add_command(label='Wind Correction', command=runWindCorrection)
+    page_menu.add_separator()
+    page_menu.add_command(label='Winds Aloft', command=getWindData)
+    page_menu.add_separator()
+    page_menu.add_command(label='Leg Time', command=runLegTime)
+    page_menu.add_separator()
+    page_menu.add_command(label='Fuel Required', command=runFuelReq)
+    page_menu.add_separator()
+    page_menu.add_command(label='Endurance', command=runEndurance)
+    page_menu.add_separator()
+    page_menu.add_command(label='Altitudes', command=runAltitudes)
 
     # create the summary menu
-    resultsmenu = tk.Menu(menu)
-    menu.add_cascade(label='Results', menu=resultsmenu)
-    resultsmenu.add_command(label='Summary', command=runDisplay)
-    resultsmenu.add_separator()
-    resultsmenu.add_command(label='Reset', command=svc.clearData)
+    results_menu = tk.Menu(menu)
+    menu.add_cascade(label='Results', menu=results_menu)
+    results_menu.add_command(label='Summary', command=runDisplay)
+    results_menu.add_separator()
+    results_menu.add_command(label='Reset', command=svc.clearData)
+
     # populate the splash/image at the top of the tool
     try:
         img = ImageTk.PhotoImage(file='images/engines.jpg')
@@ -123,14 +128,15 @@ def main():
                              text="Reset", command=svc.clearData)
     summary_btn = ttk.Button(e6b, width=MAIN_BUTTON_WIDTH, padding=MAIN_BUTTON_PADDING,
                              text="View Summary", command=runDisplay)
-    picture_window  = ttk.Label(e6b, width=TEXT_BOX_WIDTH, padding=TEXT_BOX_PADDING, image=img)
+    picture_window = ttk.Label(e6b, width=TEXT_BOX_WIDTH, padding=TEXT_BOX_PADDING, image=img)
+    # -----------------------------------------------------------------------------------------------------------------
     wind_corr       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Wind Correction Angle", command=runWindCorrection)
     heading_corr    = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Heading Correction")
-    legtime         = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+    leg_time        = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Leg Time", command=runLegTime)
-    fuel_req        = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+    fuel_required   = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Fuel Requirements", command=runFuelReq)
     endurance       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Endurance", command=runEndurance)
@@ -138,7 +144,7 @@ def main():
                                  text="Altitude", command=runAltitudes)
     get_winds       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Get Winds Aloft", command=getWindData)
-    conversions       = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
+    conversions     = ttk.Button(e6b, width=MENU_BUTTON_WIDTH, padding=MENU_BUTTON_PADDING,
                                  text="Conversions")
 
     # position the buttons
@@ -150,8 +156,8 @@ def main():
     summary_btn.grid(column=3, row=0)
     wind_corr.grid(column=4, row=0)
     heading_corr.grid(column=4, row=1)
-    legtime.grid(column=4, row=2)
-    fuel_req.grid(column=4, row=3)
+    leg_time.grid(column=4, row=2)
+    fuel_required.grid(column=4, row=3)
     endurance.grid(column=4, row=4)
     altitude.grid(column=4, row=5)
     get_winds.grid(column=4, row=6)
@@ -161,8 +167,9 @@ def main():
     heading_corr.state([ 'disabled' ])
     conversions.state([ 'disabled' ])
 
-    print(legtime.configure().keys())
+    # print(leg_time.configure().keys())
     e6b.mainloop()
+
 
 if __name__ == "__main__":
     main()

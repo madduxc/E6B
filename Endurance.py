@@ -5,7 +5,7 @@
 import DataExchange as svc
 import tkinter as tk
 from tkinter import ttk
-from goHome import goHome
+from Utilities import goHome
 
 
 def runEndurance(test=0):

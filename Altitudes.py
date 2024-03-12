@@ -1,10 +1,12 @@
 # Author:           Charles D. Maddux
 # Date Created:     4 March 2024
-# Description:      E6B Altitude Calculator
+# Description:      E6B Calculator
+#                   Altitude page
+
 import math
 import tkinter as tk
 from tkinter import ttk
-from goHome import goHome
+from Utilities import goHome
 
 
 def runAltitudes(test=0):
@@ -32,13 +34,6 @@ def runAltitudes(test=0):
     x_coord = screen_width - (width + 20)
     y_coord = (screen_height / 2) + 1.2 * height
     alt_box.geometry("%dx%d+%d+%d" % (width, height, x_coord, y_coord))
-
-    # create the page menu
-    menu = tk.Menu(alt_box)
-    alt_box.config(menu=menu)
-    filemenu = tk.Menu(menu)
-    menu.add_cascade(label='File', menu=filemenu)
-    filemenu.add_command(label='Home', command=lambda: goHome(alt_box))
 
     def calculateAltitudes():
         """
@@ -95,6 +90,12 @@ def runAltitudes(test=0):
         except:
             pressure_alt.insert(1, " - ")
 
+    # create the page menu
+    menu = tk.Menu(alt_box)
+    alt_box.config(menu=menu)
+    file_menu = tk.Menu(menu)
+    menu.add_cascade(label='File', menu=file_menu)
+    file_menu.add_command(label='Home', command=lambda: goHome(alt_box))
     # -----------------------------------------------------------------------------------------------------------------
     # home button
     home_btn = ttk.Button(alt_box, padding=4, text="Home", command=lambda: goHome(alt_box))
